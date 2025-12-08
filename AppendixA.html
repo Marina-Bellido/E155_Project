@@ -212,6 +212,7 @@ window.Quarto = {
   <li><a href="#a.3-normal-operation" id="toc-a.3-normal-operation" class="nav-link" data-scroll-target="#a.3-normal-operation">A.3 Normal Operation</a></li>
   </ul></li>
   <li><a href="#spi-signal-verification-via-logic-analyzer" id="toc-spi-signal-verification-via-logic-analyzer" class="nav-link" data-scroll-target="#spi-signal-verification-via-logic-analyzer">SPI Signal Verification via Logic Analyzer</a></li>
+  <li><a href="#technical-decomentation" id="toc-technical-decomentation" class="nav-link" data-scroll-target="#technical-decomentation">Technical Decomentation</a></li>
   </ul>
 </nav>
     </div>
@@ -331,6 +332,15 @@ window.Quarto = {
 <li>INT transitions low after configuration: Triggers exit from INIT_DONE_CHECK into WAIT_DATA, confirming the sensor is now fully configured and operational.</li>
 </ol>
 <p>This capture validates that the FPGA FSM implements the expected initialization handshake and SPI timing, successfully transitioning the BNO085 into normal data-output mode.</p>
+</section>
+<section id="technical-decomentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-decomentation">Technical Decomentation</h2>
+<p>All code for this initial fpga implementation can be found on this <a href="https://github.com/stremme1/E155_Final_SPI_Test/tree/main/fpga">GitHub repository.</a></p>
+<p>The following files within the folder are specific to the FPGA-Based BNO085 SHTP Driver:</p>
+<ul>
+<li>bno085_controller.sv</li>
+<li>spi_master.sv</li>
+</ul>
 
 
 
