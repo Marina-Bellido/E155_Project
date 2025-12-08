@@ -42,6 +42,13 @@
     "text": "References:\n\nHMC E-155 Website:\nHMC E155 Project Website\nLab7\n\n\nArduino:\nArduino ESP32 Spec\nAdafruit\n\n\nBNO085 IMU Sensor:\nBNO08x Datasheet\nBNO085 Sensor\n\n\nMCU STM32L432KC:\nSTM32L432KC Reference Manual\nSTM32L432KC Datasheet\niCE40UP5K Datasheet\n\n\nInvisible Drum Sets:\nAerodrums\nHyperdrum\nPocketDrum 2 Max\nHafthorArni"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "E155 Final Project - Invisible Drum Set",
+    "section": "",
+    "text": "“You guys made a Kickass drumset.” — Prof. Matthew Spencer"
+  },
+  {
     "objectID": "index.html#abstract",
     "href": "index.html#abstract",
     "title": "E155 Final Project - Invisible Drum Set",
@@ -151,7 +158,21 @@
     "href": "Results.html#videos",
     "title": "Results",
     "section": "Videos",
-    "text": "Videos\nCOMPLETE THIS LATER!!!!"
+    "text": "Videos\n\n\nYour browser does not support the video tag."
+  },
+  {
+    "objectID": "Results.html#section",
+    "href": "Results.html#section",
+    "title": "Results",
+    "section": "",
+    "text": "Your browser does not support the video tag."
+  },
+  {
+    "objectID": "Results.html#section-1",
+    "href": "Results.html#section-1",
+    "title": "Results",
+    "section": "",
+    "text": "Your browser does not support the video tag."
   },
   {
     "objectID": "Results.html#pictures",
