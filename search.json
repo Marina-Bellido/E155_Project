@@ -1,415 +1,184 @@
 [
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "E155 Blog",
+    "objectID": "Mcudesign.html",
+    "href": "Mcudesign.html",
+    "title": "MCU Design",
     "section": "",
-    "text": "Blog 1\n\n\nWelcome to my weekly Blogs\n\n\n\n\n\nAug 29, 2025\n\n\nMarina Bellido\n\n\n\n\n\nNo matching items"
+    "text": "Decodes the packaged data packets from the FPGA, identifies drum triggers based on gesture patterns, and outputs audio samples through the DAC to drive the speaker. This transition to using Arduino for sensor data acquisition and FPGA for data packaging provided the reliability and consistency needed for real-time operation, while maintaining the FPGA’s role in efficient data processing and the MCU’s role in audio playback."
+  },
+  {
+    "objectID": "Mcudesign.html#mcu-runtime-flow",
+    "href": "Mcudesign.html#mcu-runtime-flow",
+    "title": "MCU Design",
+    "section": "MCU Runtime Flow",
+    "text": "MCU Runtime Flow\n\n\n\nFigure 4: MCU main control loop flowchart for dual-hand invisible drum system\n\n\n \n\nMain Application Files\nThis section contains the entry points for the system and the logic for the main control loops.\n\nmain.c: Main entry point for dual-hand drum trigger system. Initializes hardware (DAC, SPI, buttons), reads sensor data from SPI, processes both sensors, and plays drum sounds when triggers detected.\nmain_left.c: Single-hand version processing only left hand sensor. Uses left-hand-only detection logic for simplified testing.\nmain_right.c: Single-hand version processing only right hand sensor. Uses right-hand-only detection logic for simplified testing.\n\n\n\nDetection Logic\nFiles responsible for interpreting sensor data against the drum zone map.\n\ndrum_detector.c Core drum trigger detection using yaw zones, pitch thresholds, and gyroscope readings. Checks both sensors against predefined zones and returns drum codes (0x00-0x07) when strike conditions met.\n\nThe following logic pertantes to each left and right hand sensor:\n\nDrum Trigger Mapping Logic Based on Orientation and Motion\n\n\n\n\n\n\n\n\n\n\n\nCode\nInstrument\nHand\nYaw Range (°)\nPitch / Condition\nGyro Y\nGyro Z\n\n\n\n\n0x00\nSNARE\nRight\n20° – 120°\nAny\n&lt; -2500\nAny\n\n\n0x00\nSNARE\nLeft\n350° – 100°\n≤ 30° OR Gyro Z ≤ -2000\n&lt; -2500\nAny\n\n\n0x01\nHIHAT\nLeft\n350° – 100°\n&gt; 30°\n&lt; -2500\n&gt; -2000\n\n\n0x02\nKICK\nButton\nN/A\nN/A\nN/A\nN/A\n\n\n0x03\nHIGH_TOM\nRight\n340° – 20°\n≤ 50°\n&lt; -2500\nAny\n\n\n0x03\nHIGH_TOM\nLeft\n325° – 350°\n≤ 50°\n&lt; -2500\nAny\n\n\n0x04\nMID_TOM\nRight\n305° – 340°\n≤ 50°\n&lt; -2500\nAny\n\n\n0x04\nMID_TOM\nLeft\n300° – 325°\n≤ 50°\n&lt; -2500\nAny\n\n\n0x05\nCRASH\nRight\n340° – 20°\n&gt; 50°\n&lt; -2500\nAny\n\n\n0x05\nCRASH\nLeft\n325° – 350°\n&gt; 50°\n&lt; -2500\nAny\n\n\n0x06\nRIDE\nRight\n305° – 340°\n&gt; 50°\n&lt; -2500\nAny\n\n\n0x06\nRIDE\nRight\n200° – 305°\n&gt; 30°\n&lt; -2500\nAny\n\n\n0x06\nRIDE\nLeft\n300° – 325°\n&gt; 50°\n&lt; -2500\nAny\n\n\n0x06\nRIDE\nLeft\n200° – 300°\n&gt; 30°\n&lt; -2500\nAny\n\n\n0x07\nFLOOR_TOM\nRight\n200° – 305°\n≤ 30°\n&lt; -2500\nAny\n\n\n0x07\nFLOOR_TOM\nLeft\n200° – 300°\n≤ 30°\n&lt; -2500\nAny\n\n\n\n \n\n\n\nFigure 5: Drumset\n\n\n\n\nSensor Processing\n\nbno085_decoder.c: Converts BNO085 quaternion data (Q14 format) to Euler angles (roll, pitch, yaw). Normalizes yaw to 0-360° range for zone checking.\n\n\n\nAudio Playback\n\naudio_player.c: Maps drum codes to WAV sample arrays and plays sounds via DAC. Prevents overlapping playback using is_playing flag.\n\n\n\nHardware Abstraction Layer (STM32L432KC)\nLow-level drivers for peripheral configuration and control.\n\nSTM32L432KC_DAC.c: Configures DAC peripheral for audio output on PA4. Implements WAV playback using timer interrupts at specified sample rates.\nSTM32L432KC_SPI.c: SPI slave mode communication to receive 16-byte sensor data packets from Arduino/ESP32 master. Parses quaternion and gyroscope data.\nSTM32L432KC_USART.c: USART configuration for debug serial communication. Provides low-level byte/string transmission functions.\nSTM32L432KC_GPIO.c: GPIO pin configuration and control. Implements pinMode(), digitalRead(), digitalWrite() for buttons and SPI pins.\nSTM32L432KC_RCC.c: Clock configuration setting system clock to 80MHz. Enables peripheral clocks for GPIO, SPI, USART, DAC, and timers.\nSTM32L432KC_FLASH.c: Flash memory configuration for 80MHz operation. Sets wait states and enables prefetch buffer.\nSTM32L432KC_TIMER.c: Timer functions for delays. Implements ms_delay() for button debouncing and audio timing.\n\n\n\nDebug & Utilities\n\ndebug_print.c Debug logging using USART with printf-style formatting. Used for debugging sensor data and system state.\nwav_arrays/ Directory with WAV samples converted to C arrays. Contains all 8 drum samples as 16-bit PCM data."
+  },
+  {
+    "objectID": "Mcudesign.html#technical-documentation",
+    "href": "Mcudesign.html#technical-documentation",
+    "title": "MCU Design",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nAll code for MCU can be found on this GitHub repository."
+  },
+  {
+    "objectID": "More.html",
+    "href": "More.html",
+    "title": "More",
+    "section": "",
+    "text": "This project would not have been successful without the tireless efforts of the following individuals:\nProf. Spencer - Thank you for your guidance, encouragement, and expertise throughout the semester. Your support helped shape both the success of this project and our growth as engineers.\nXavier Walter — Thank you for your mentorship and willingness to help us through every challenge. Your technical insights, debugging support, and design advice were essential to our progress."
+  },
+  {
+    "objectID": "More.html#acknowledgements",
+    "href": "More.html#acknowledgements",
+    "title": "More",
+    "section": "",
+    "text": "This project would not have been successful without the tireless efforts of the following individuals:\nProf. Spencer - Thank you for your guidance, encouragement, and expertise throughout the semester. Your support helped shape both the success of this project and our growth as engineers.\nXavier Walter — Thank you for your mentorship and willingness to help us through every challenge. Your technical insights, debugging support, and design advice were essential to our progress."
+  },
+  {
+    "objectID": "More.html#references",
+    "href": "More.html#references",
+    "title": "More",
+    "section": "References:",
+    "text": "References:\n\nHMC E-155 Website:\nHMC E155 Project Website\nLab7\n\n\nArduino:\nArduino ESP32 Spec\nAdafruit\n\n\nBNO085 IMU Sensor:\nBNO08x Datasheet\nBNO085 Sensor\n\n\nMCU STM32L432KC:\nSTM32L432KC Reference Manual\nSTM32L432KC Datasheet\niCE40UP5K Datasheet\n\n\nInvisible Drum Set:\nAerodrums\nHyperdrum\nPocketDrum 2 Max\nHafthorArni"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "E155 Portfolio",
+    "title": "E155 Final Project - Invisible Drum Set",
     "section": "",
-    "text": "I am a senior engineering major at Harvey Mudd College interested in electrical and computer engineering/digital design. I’m currently doing research as a Clay-Wolkin Fellow at Harvey Mudd’s VLSI lab developing a comprehensive open-source functional verification suite for RISC-V processors. I have experience with SystemVerilog and RISC-V assembly and would love to continue to grow my computer engineering skills. I’m always excited to learn new things and would be happy to connect with you!"
+    "text": "Project creators, Emmett and Marina, posing with drumsticks. Learn more about the team members here"
   },
   {
-    "objectID": "posts/first-post.html",
-    "href": "posts/first-post.html",
-    "title": "Blog 1",
+    "objectID": "index.html#abstract",
+    "href": "index.html#abstract",
+    "title": "E155 Final Project - Invisible Drum Set",
+    "section": "Abstract",
+    "text": "Abstract\nThis project aims to adapt the existing Invisible Drum Set—originally implemented with an Arduino Nano and BNO055 IMU sensor—onto the E155 hardware platform, consisting of an STM32 MCU and UPduino FPGA. It will enable playing virtual drums through air gestures detected by the IMU, with real-time audio synthesis and low latency."
+  },
+  {
+    "objectID": "FPGA.html",
+    "href": "FPGA.html",
+    "title": "FPGA Design",
     "section": "",
-    "text": "Hi readers, I’m super excited to be taking E155. I’m taking this class because I want to learn more about embedded system design and microcontrollers. I am also looking forward to spending all of my time this semester in the digital design lab alongside all of my incredible classmates."
+    "text": "Initially, we attempted to configure the BNO085 sensors directly from the FPGA using a 11-state finite state machine (FSM) with encoding logic implemented using DSP blocks and BRAM (Block RAM) resources. This approach aimed to handle the Sensor Hub Transport Protocol (SHTP) communication directly on the FPGA, including sensor initialization, command encoding, and data packet parsing. While this implementation successfully extracted data from the sensors (as shown in Figure 3), the approach proved unreliable in practice. For more information on the developed of the SHTP protocol on the FPGA, please refer to Appendix A.\nThe system experienced inconsistent connection behavior, with data transmission failures and intermittent communication errors that prevented stable operation. The complexity of managing SHTP protocol timing, interrupt handling, and state transitions at the hardware level made it difficult to achieve the reliability required for real-time drum triggering."
   },
   {
-    "objectID": "Labs/Lab3/Lab3.html",
-    "href": "Labs/Lab3/Lab3.html",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "",
-    "text": "In this lab, an FPGA-based design was developed to scan a 16-button keypad and display the entered characters on a two-digit seven-segment display. The display shows two characters at a time, which remain visible until new inputs are received. The system is designed to handle switch bouncing and simultaneous button presses reliably."
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#introduction",
-    "href": "Labs/Lab3/Lab3.html#introduction",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "",
-    "text": "In this lab, an FPGA-based design was developed to scan a 16-button keypad and display the entered characters on a two-digit seven-segment display. The display shows two characters at a time, which remain visible until new inputs are received. The system is designed to handle switch bouncing and simultaneous button presses reliably."
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#design-and-testing-methodology",
-    "href": "Labs/Lab3/Lab3.html#design-and-testing-methodology",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "Design and Testing Methodology",
-    "text": "Design and Testing Methodology\nMy test was split into several modules. Look at table 1 so see in more detail all of the modules inputs and output. At a high level, I made a module for a controller finite state machine, the debouncer (which is a counter), the row_scanner for the keypad, and the 7-segment display. A synchronizer was also used to avoid metastability from the asynchronous inputs. I built on many of the modules from lab 2, such as the lab2_mb for the top module, and the 7-segment display module. The main design challenge came in the FSM, which also incorporated switch debouncing and the control logic to retain previous numbers. This is explained in more detail in the FSM section.\nThe physical design was setup to ensure that the maximum current from the FPGA pins was not exceeded, which necessitated the use of transistors to drive the 7-segment displays. The keypad was setup to use pull-down resistors so that whenever I pressed a column than I would output a 1. To do so, I connected all of my inputs (cols) to 10Kohms resistors.\nThe Verilog modules were tested using several testbenches using assert statements covering a variety of different possible inputs. It did not seem necessary to test every possible input combination as that number quickly explodes. The physical design was tested using a wide range of different possible inputs."
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#technical-documentation",
-    "href": "Labs/Lab3/Lab3.html#technical-documentation",
-    "title": "Lab 3: Keypad Scanner",
+    "objectID": "FPGA.html#technical-documentation",
+    "href": "FPGA.html#technical-documentation",
+    "title": "FPGA Design",
     "section": "Technical Documentation",
-    "text": "Technical Documentation\nThe source code for the project can be found in the associated GitHub repository."
+    "text": "Technical Documentation\nAll code for the fpga can be found on this GitHub repository.\n\n\n\nFigure 4: Top FPGA Module"
   },
   {
-    "objectID": "Labs/Lab3/Lab3.html#block-diagram",
-    "href": "Labs/Lab3/Lab3.html#block-diagram",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "Block Diagram",
-    "text": "Block Diagram\n\n\n\nFigure 1: Block diagram of the Verilog design for lab3\n\n\nThe block diagram in Figure 1 demonstrates the overall architecture of the design. The various modules are described here:\nTABLE 1: Verilog Modules\n\n\n\n\n\n\n\n\n\nSystemVerilog Module\nDescription\nInput\nOutput\n\n\n\n\nlab3_mb.sv\nTop module with HSOC timer, counter, and input selection\ncols[3:0], rst\nrows[3:0], sel[1:0], segment[6:0]\n\n\nsevseg\n7-segment display decoder\ns\nsegment[6:0]\n\n\nrow_counter\nscanning the rows and checking if a columns has been pushed\nstop_counter, write_enable, cols[3:0], rst, clk\npushed, rows[3:0], key_val[7:0]\n\n\nfsm_mb\nFSM\npushed, clk, time_passed, rst\nstop_counter, write_enable, debounce_enable, display_enable\n\n\ndebouncer\ncounter to wait for switch debouncing\ndebounce_enable, clk, rst\ntime_passed"
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#finite-state-machine",
-    "href": "Labs/Lab3/Lab3.html#finite-state-machine",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "Finite-State Machine",
-    "text": "Finite-State Machine\nThe following state transition diagram and table explain the operation of my FSM\n\n\n\nFigure 2: State transition diagram of key_scan fsm\n\n\n\n\n\n\n\n\n\n\nCurrent State\nCondition\nNextState\n\n\n\n\nS0 (SCAN)\npushed = 1\nS1 (SAVE_KEY)\n\n\nS1 (SAVE_KEY)\n\nS2 (WAIT-Debounce)\n\n\nS2 (WAIT-Debounce)\ntime_passed = 1\nS3 (CHECK)\n\n\nS3 (CHECK)\npushed = 1\nS4 (DISPLAY)\n\n\nS3 (CHECK)\npushed = 0\nS0 (SCAN)\n\n\nS4 (DISPLAY)\n\nS5 (WAIT)\n\n\nS5 (WAIT)\npushed = 1\nS0 (SCAN)\n\n\n\n\n\n\n\n\n\n\n\n\n\nState\nstop_counter\ndisplay_enable\nwrite_enable\ndebounce_enable\n\n\n\n\nS0 (SCAN)\n0\n0\n0\n0\n\n\nS1 (SAVE_KEY)\n1\n0\n0\n0\n\n\nS2 (WAIT-Debounce)\n1\n0\n0\n1\n\n\nS3 (CHECK)\n1\n0\n1\n0\n\n\nS4 (DISPLAY)\n1\n1\n0\n0\n\n\nS5 (WAIT)\n1\n0\n0\n0"
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#schematic",
-    "href": "Labs/Lab3/Lab3.html#schematic",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "SCHEMATIC",
-    "text": "SCHEMATIC\n\n\n\nFigure 3: Schematic of the physical circuit.\n\n\nFigure 3 shows the physical layout of the design. I haven’t drown the switches for the keypad since they are internal to the hardware."
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#results-and-discussion",
-    "href": "Labs/Lab3/Lab3.html#results-and-discussion",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "Results and Discussion",
-    "text": "Results and Discussion\n\nTestbench Simulation\nI have attached questa simulations of all the testbenches created for my modules.\n\n\n\nFigure 4: Screenshot of a QuestaSim simulation for the scanning of the rows (row_counter)\n\n\n\n\n\nFigure 5: Screenshot of a QuestaSim simulation for the bouncer\n\n\n\n\n\nFigure 6: Screenshot of a QuestaSim simulation for the fsm S3 pushed=1\n\n\nWhen in S3 pushed=1, go continue and in S5 pushed =0, so go back to S0: CORRECT\n\n\n\nFigure 7: Screenshot of a QuestaSim simulation for the fsm when S3 pushed=0\n\n\nWhen in S3 pushed=0, go back to S0: CORRECT"
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#conclusion",
-    "href": "Labs/Lab3/Lab3.html#conclusion",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "Conclusion",
-    "text": "Conclusion\nThe design successfully displays two digits on the 7-segment display based on the characters that are input using the keypad. The numbers persist after the keys are released and cycle off to the left as new keys are pressed.\n\n\n\nFigure 8: Final Hardware implementation fully working"
-  },
-  {
-    "objectID": "Labs/Lab3/Lab3.html#ai-sections",
-    "href": "Labs/Lab3/Lab3.html#ai-sections",
-    "title": "Lab 3: Keypad Scanner",
-    "section": "AI Sections",
-    "text": "AI Sections\nMy AI section can be found in the following link: AI SECTION"
-  },
-  {
-    "objectID": "Labs/Lab5/Lab5.html",
-    "href": "Labs/Lab5/Lab5.html",
-    "title": "Lab 5: Interrupts",
+    "objectID": "NewHardware.html",
+    "href": "NewHardware.html",
+    "title": "New Hardware",
     "section": "",
-    "text": "In this lab, we utilized an ARM microcontroller to determine a motor’s rotational speed and direction through a quadrature encoder, with encoder pulses captured via interrupts to maintain precise and accurate measurements."
+    "text": "Figure 6: IMU BNO085 Sensor\n\n\nThe BNO085 is a 9-axis intelligent IMU that integrates an accelerometer, gyroscope, and magnetometer with an onboard sensor-fusion processor. Instead of exposing raw sensor registers directly, the BNO085 communicates through the Sensor Hub Transport Protocol (SHTP) — a structured, packet-based protocol that runs over standard physical interfaces including I²C, SPI, or UART, depending on the configuration of the protocol-select pins at startup.\nSHTP organizes all communication into channels, each dedicated to a specific type of information. For example, there are channels for configuration commands, sensor data streams, and control/status messages. Each channel maintains its own sequence number, which ensures that the host can detect lost or out-of-order packets and reliably manage multiple data streams at once.\nEach SHTP transmission consists of a packet header followed by a payload. The 4-byte header contains the total packet length (including header), the channel number, and the channel’s sequence number. The payload begins with a Report ID, which defines the type of data being transmitted, followed by the actual sensor data bytes. Depending on the enabled reports, this data may include raw motion readings or fully fused orientation outputs such as rotation vectors, quaternions, or yaw-pitch-roll angles. The BNO085 continually sends these report packets to the host at the configured update rate, allowing efficient and low-latency motion tracking without requiring any external fusion algorithms.\nBy using SHTP and a multi-channel packet architecture, the BNO085 provides robust and synchronized delivery of motion data, while offloading the heavy computational cost of sensor fusion from the host processor. This makes the sensor well-suited for high-performance embedded applications such as robotics, VR/AR motion controllers, and human-motion tracking systems.\nThe BNO085 contains an onboard MCU that runs embedded fusion firmware, enabling it to perform its own signal processing and generate orientation data autonomously.\n\nInside the sensor package, there is an ARM Cortex-M0+ microcontroller running Bosch’s BSX Lite fusion firmware (or CEVA SH-2/SH-2A depending on version).\nThis embedded software performs:\n  - Sensor fusion (combining accel + gyro + mag)\n  - Calibration and drift compensation\n  - Report generation and timestamping\n  - SHTP communication handling\nThis is why the BNO085 can output high-level motion data like quaternions and rotation vectors instead of only raw sensor values — the processing is already happening inside the chip.\n\nMore information on the SHTP protocol can be found in the bno08x Data Sheet.\nBno085 Datasheet."
   },
   {
-    "objectID": "Labs/Lab5/Lab5.html#introduction",
-    "href": "Labs/Lab5/Lab5.html#introduction",
-    "title": "Lab 5: Interrupts",
+    "objectID": "NewHardware.html#bno085-imu-sensor-and-communication-protocol",
+    "href": "NewHardware.html#bno085-imu-sensor-and-communication-protocol",
+    "title": "New Hardware",
     "section": "",
-    "text": "In this lab, we utilized an ARM microcontroller to determine a motor’s rotational speed and direction through a quadrature encoder, with encoder pulses captured via interrupts to maintain precise and accurate measurements."
+    "text": "Figure 6: IMU BNO085 Sensor\n\n\nThe BNO085 is a 9-axis intelligent IMU that integrates an accelerometer, gyroscope, and magnetometer with an onboard sensor-fusion processor. Instead of exposing raw sensor registers directly, the BNO085 communicates through the Sensor Hub Transport Protocol (SHTP) — a structured, packet-based protocol that runs over standard physical interfaces including I²C, SPI, or UART, depending on the configuration of the protocol-select pins at startup.\nSHTP organizes all communication into channels, each dedicated to a specific type of information. For example, there are channels for configuration commands, sensor data streams, and control/status messages. Each channel maintains its own sequence number, which ensures that the host can detect lost or out-of-order packets and reliably manage multiple data streams at once.\nEach SHTP transmission consists of a packet header followed by a payload. The 4-byte header contains the total packet length (including header), the channel number, and the channel’s sequence number. The payload begins with a Report ID, which defines the type of data being transmitted, followed by the actual sensor data bytes. Depending on the enabled reports, this data may include raw motion readings or fully fused orientation outputs such as rotation vectors, quaternions, or yaw-pitch-roll angles. The BNO085 continually sends these report packets to the host at the configured update rate, allowing efficient and low-latency motion tracking without requiring any external fusion algorithms.\nBy using SHTP and a multi-channel packet architecture, the BNO085 provides robust and synchronized delivery of motion data, while offloading the heavy computational cost of sensor fusion from the host processor. This makes the sensor well-suited for high-performance embedded applications such as robotics, VR/AR motion controllers, and human-motion tracking systems.\nThe BNO085 contains an onboard MCU that runs embedded fusion firmware, enabling it to perform its own signal processing and generate orientation data autonomously.\n\nInside the sensor package, there is an ARM Cortex-M0+ microcontroller running Bosch’s BSX Lite fusion firmware (or CEVA SH-2/SH-2A depending on version).\nThis embedded software performs:\n  - Sensor fusion (combining accel + gyro + mag)\n  - Calibration and drift compensation\n  - Report generation and timestamping\n  - SHTP communication handling\nThis is why the BNO085 can output high-level motion data like quaternions and rotation vectors instead of only raw sensor values — the processing is already happening inside the chip.\n\nMore information on the SHTP protocol can be found in the bno08x Data Sheet.\nBno085 Datasheet."
   },
   {
-    "objectID": "Labs/Lab5/Lab5.html#design-methodology",
-    "href": "Labs/Lab5/Lab5.html#design-methodology",
-    "title": "Lab 5: Interrupts",
-    "section": "Design Methodology",
-    "text": "Design Methodology\nI based my design on several example libraries provided for this course, using the GPIO, RCC, and TIM libraries with minimal modification. Building on these, I implemented control for multiple EXTI interrupt controllers.\nFor my design, I chose to use a single interrupt handler that responds to changes on either encoder channel. Each time the handler is triggered, it increments a pulse-count variable and updates the encoder’s current state, recording which channel changed and whether it was a rising or falling edge. The new state is compared to the previous state to determine the motor’s direction using quadrature logic, since the 90° phase difference between channels produces a unique transition pattern for clockwise versus counterclockwise rotation. A checkDirection function evaluates the transition to assign the correct direction. Using a timer, the number of pulses is measured every second. This count is divided by 1632 (the pulses per rotation × 2 channels × counting both rising and falling edges) to calculate the motor’s speed in revolutions per second. The pulse-count variable is then reset to start measuring the next interval.\nThis design uses interrupts to count the encoder pulses, which is more accurate and avoids the tricky task of setting up multiple timers with different frequencies. Only one timer is needed, and it’s used just to check how many pulses occurred every second. The timer runs at a 1 ms rate, so a simple delay_millis function is enough to measure the one-second intervals."
+    "objectID": "NewHardware.html#arduino-esp32-interface-and-library-integration",
+    "href": "NewHardware.html#arduino-esp32-interface-and-library-integration",
+    "title": "New Hardware",
+    "section": "Arduino ESP32: Interface and Library Integration",
+    "text": "Arduino ESP32: Interface and Library Integration\n\n\n\nFigure 7: Arduino Esp32\n\n\nTo collect and process motion data from the BNO085 sensor, the system uses an Arduino Nano ESP32 as the host microcontroller. This board combines the ESP32-S3’s processing power with the ease of the Arduino ecosystem, while also providing integrated Wi-Fi and Bluetooth connectivity. Its larger memory capacity makes it well-suited for handling advanced sensor-fusion libraries.\nTo communicate with the IMU, the Arduino implements the Adafruit_BNO08x library, which provides a high-level application interface for the BNO085 sensor. Instead of requiring manual parsing of Sensor Hub Transport Protocol (SHTP) packets, the library abstracts low-level communication and directly exposes orientation and motion data in a structured format. Through simple API calls, the application can initialize the sensor, enable specific data reports, and retrieve quaternion or Euler-angle outputs with precise timestamps.\nThe communication between the Arduino ESP32 and the BNO085 uses the I²C protocol, following a typical configuration where SDA and SCL lines connect to the board’s dedicated I²C pins, and the device uses its default I²C address (0x4A). Once initialized with begin_I2C(), the system activates the desired sensor-fusion reports, such as the rotation vector, through enableReport(…). During runtime, calls to functions like getSensorEvent(…) return the latest fused motion data, processed internally by the sensor’s onboard firmware.\nTogether, the Arduino Nano ESP32 platform and the Adafruit_BNO08x library provide a compact and efficient solution for retrieving motion-tracking information from the BNO085, while minimizing implementation complexity and host processing requirements.\nArduino Esp32 Datasheet.\nAdafruit_BNO08x library"
   },
   {
-    "objectID": "Labs/Lab5/Lab5.html#technical-documentation",
-    "href": "Labs/Lab5/Lab5.html#technical-documentation",
-    "title": "Lab 5: Interrupts",
-    "section": "Technical Documentation:",
-    "text": "Technical Documentation:\nThe source code for the project can be found in the associated GitHub repository.\n\nSchematic\n\n\n\nFigure 1: Schematic of the circuit design for lab5\n\n\nA 25GA-370 DC Motor was used as the motor/encoder for this lab.Datasheet HDSP-511x\n\n\nFlowchart\n\n\n\nFigure 2: Flowchart for the interrupt logic for lab5\n\n\nThe main loop is executing on the left and the interrupt handler that is triggered whenever an encoder channel pulses is on the right."
-  },
-  {
-    "objectID": "Labs/Lab5/Lab5.html#result-and-discussion",
-    "href": "Labs/Lab5/Lab5.html#result-and-discussion",
-    "title": "Lab 5: Interrupts",
-    "section": "Result and Discussion",
-    "text": "Result and Discussion\nTo test my motor, I connected it to a power supply and adjusted the voltage while it was attached to my circuit. I initially ran the motor at very low speeds in both directions to visually verify that the reported rotation direction matched the actual movement, which it did. I also connected the encoder channels to an oscilloscope and saw how the interaction with the interrupt handler was occurring. \nI also compared the performance of interrupt based code to manual polling at high speeds:\n\n\n\nFigure 5: Oscilloscope Trace showing the frequency. (commented out the delay)\n\n\n\n\n\nFigure 6: Calculations to find Max Revolutions at which you can still accurately display your data without experiencing alliasing.\n\n\n\nInterrupt Vs polling\nIt’s comparing two ways your microcontroller (MCU) can detect signals coming from your encoder (or any input pin):\n\nPolling – constantly checking the pin to see if it changed.\nInterrupts – letting the MCU automatically react when the pin changes.\n\nIn the polling method, the MCU repeatedly checks the state of the input pin in a continuous loop to see if it has changed. This approach is simple to implement, but it can become inefficient because the MCU spends much of its time checking the pin instead of performing other tasks. More importantly, if the encoder signal changes faster than the MCU can check it, pulses may be missed, resulting in inaccurate measurements. In contrast, interrupts allow the MCU to automatically react whenever the pin changes state. When an interrupt is triggered, the MCU immediately pauses its current operations and jumps to a special function designed to handle that event. This ensures that no pulses are missed, even at high speeds, while also freeing the MCU to perform other operations when no encoder changes are occurring. Overall, interrupts provide a faster, more reliable, and more efficient way to handle encoder signals compared to polling."
-  },
-  {
-    "objectID": "Labs/Lab5/Lab5.html#conclusion",
-    "href": "Labs/Lab5/Lab5.html#conclusion",
-    "title": "Lab 5: Interrupts",
-    "section": "Conclusion",
-    "text": "Conclusion\nThe design successfully reports the speed of a motor and its direction, updating every second."
-  },
-  {
-    "objectID": "Labs/Lab5/Lab5.html#ai-sections",
-    "href": "Labs/Lab5/Lab5.html#ai-sections",
-    "title": "Lab 5: Interrupts",
-    "section": "AI Sections",
-    "text": "AI Sections\nMy AI section can be found in the following link: AI SECTION"
-  },
-  {
-    "objectID": "Labs/Lab6/Lab6.html",
-    "href": "Labs/Lab6/Lab6.html",
-    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "objectID": "AppendixA.html",
+    "href": "AppendixA.html",
+    "title": "Appendix A:",
     "section": "",
-    "text": "In this lab, an ARM microcontroller was used to interface with a DS1722 SPI-based temperature sensor. The measured data was designed to be transmitted via UART to an ESP8266 module hosting a web server with an HTML interface, allowing users to view real-time temperature readings and adjust the sensor’s precision. In essence, we built a simple IoT device that demonstrated end-to-end data acquisition and remote monitoring."
+    "text": "Before transitioning to the final ESP32-assisted architecture, we developed a fully-hardware BNO085 driver implemented directly on the FPGA. The goal of this approach was to remove the dependency on the Adafruit software libraries and have the FPGA manage all communication with the BNO085 over SPI.\n\n\nThis controller was designed to:\n\nWake and configure the BNO085 sensor into SPI mode\nSend SHTP initialization commands to enable motion features\nReceive real-time motion data using the INT pin\nDecode Rotation Vector (quaternion) and Calibrated Gyroscope reports entirely in hardware\n\n\n\n\nIn a standard microcontroller implementation, the Adafruit BNO085 library handles:\n\nDevice wake-up and handshake\nSH-2 Set Feature commands\nSHTP packet parsing and FIFO management\n\nOur SystemVerilog module (bno085_controller.sv) replicated these responsibilities using a finite state machine:\n\n\n\nOnce initialized, the FSM:\n\nWaits for INT to assert low\nReads the SHTP header to determine channel and packet size\nParses sensor payload bytes as they arrive over SPI\nProduces validated motion data outputs:\n - Quaternion: quat_w, quat_x, quat_y, quat_z  \n - Gyroscope:  gyro_x, gyro_y, gyro_z        \n - Strobes:    quat_valid, gyro_valid\n\n\n\n\nFigure X: FSM for the BNO085_controller.sv"
   },
   {
-    "objectID": "Labs/Lab6/Lab6.html#introduction",
-    "href": "Labs/Lab6/Lab6.html#introduction",
-    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "objectID": "AppendixA.html#fpga-based-bno085-shtp-driver-initial-implementation",
+    "href": "AppendixA.html#fpga-based-bno085-shtp-driver-initial-implementation",
+    "title": "Appendix A:",
     "section": "",
-    "text": "In this lab, an ARM microcontroller was used to interface with a DS1722 SPI-based temperature sensor. The measured data was designed to be transmitted via UART to an ESP8266 module hosting a web server with an HTML interface, allowing users to view real-time temperature readings and adjust the sensor’s precision. In essence, we built a simple IoT device that demonstrated end-to-end data acquisition and remote monitoring."
+    "text": "Before transitioning to the final ESP32-assisted architecture, we developed a fully-hardware BNO085 driver implemented directly on the FPGA. The goal of this approach was to remove the dependency on the Adafruit software libraries and have the FPGA manage all communication with the BNO085 over SPI.\n\n\nThis controller was designed to:\n\nWake and configure the BNO085 sensor into SPI mode\nSend SHTP initialization commands to enable motion features\nReceive real-time motion data using the INT pin\nDecode Rotation Vector (quaternion) and Calibrated Gyroscope reports entirely in hardware\n\n\n\n\nIn a standard microcontroller implementation, the Adafruit BNO085 library handles:\n\nDevice wake-up and handshake\nSH-2 Set Feature commands\nSHTP packet parsing and FIFO management\n\nOur SystemVerilog module (bno085_controller.sv) replicated these responsibilities using a finite state machine:\n\n\n\nOnce initialized, the FSM:\n\nWaits for INT to assert low\nReads the SHTP header to determine channel and packet size\nParses sensor payload bytes as they arrive over SPI\nProduces validated motion data outputs:\n - Quaternion: quat_w, quat_x, quat_y, quat_z  \n - Gyroscope:  gyro_x, gyro_y, gyro_z        \n - Strobes:    quat_valid, gyro_valid\n\n\n\n\nFigure X: FSM for the BNO085_controller.sv"
   },
   {
-    "objectID": "Labs/Lab6/Lab6.html#design-methodology",
-    "href": "Labs/Lab6/Lab6.html#design-methodology",
-    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
-    "section": "Design Methodology",
-    "text": "Design Methodology\nTo build this system, I first needed to understand how SPI communication worked between the ARM microcontroller and the DS1722 temperature sensor. After studying the MCU’s reference manual, I configured the SPI settings—such as baud rate, data size, and duplex mode—and selected appropriate pins for SCLK, MISO, and MOSI, while using a manually controlled chip select (CS) pin. The DS1722 required a specific communication sequence: each transaction began by pulling CS high, sending a command byte (e.g., 0x80 for writes or 0x00–0x02 for reads), and then either sending or receiving data. For read operations, dummy bytes were transmitted to provide the necessary clock pulses for data output. Once communication was properly configured, I wired the MCU and sensor pins (SDO, SDI, SCLK, CS) and verified functionality by writing to and reading from the configuration register. I used an oscilloscope and logic analyzer to visualize data transfer on the MOSI and MISO lines, confirming correct timing and signal behavior. Finally, I tested the complete setup through the web interface by changing resolution settings from the HTML page and confirming that the configuration register updated as expected."
+    "objectID": "AppendixA.html#spi-signal-verification-via-logic-analyzer",
+    "href": "AppendixA.html#spi-signal-verification-via-logic-analyzer",
+    "title": "Appendix A:",
+    "section": "SPI Signal Verification via Logic Analyzer",
+    "text": "SPI Signal Verification via Logic Analyzer\nTo verify that the bno085_controller FSM behaved correctly in hardware, we captured SPI traffic between the FPGA and the BNO085 sensor using a Saleae logic analyzer. The channel mapping is given in Table X.\n\n\n\nFigure X: FPGA data output trace on Logic Analyzer with FPGA configuration and initialization\n\n\n \nTable X: Logic Analyzer Channel Assignments\n\n\n\n\n\n\n\n\nChannel\nSignal\nDescription\n\n\n\n\nD2\nMOSI\nFPGA → BNO085 SPI transmit data\n\n\nD3\nCS\nChip Select (active low)\n\n\nD5\nINT\nSensor interrupt indicating data-ready (active low)\n\n\n\n \n\nCS asserts low: Corresponds to INIT_CS_SETUP and INIT_SEND_BODY, where the FPGA begins sending the initialization command packet.\nMOSI shows valid outgoing bytes: These are the Set Feature SHTP command bytes generated by get_init_byte() inside the FSM.\nINT remains high during sensor wake/reset:Indicates the BNO085 has not yet completed boot and is not ready to provide data.\nINT transitions low after configuration: Triggers exit from INIT_DONE_CHECK into WAIT_DATA, confirming the sensor is now fully configured and operational.\n\nThis capture validates that the FPGA FSM implements the expected initialization handshake and SPI timing, successfully transitioning the BNO085 into normal data-output mode."
   },
   {
-    "objectID": "Labs/Lab6/Lab6.html#technical-documentation",
-    "href": "Labs/Lab6/Lab6.html#technical-documentation",
-    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
-    "section": "Technical Documentation:",
-    "text": "Technical Documentation:\nThe source code for the project can be found in the associated GitHub repository.\nThe DS1722 temperature sensor was used in SPI mode. Datasheet HDSP-511x]\n\nESP8266 Web Server and MCU Interface\nThe ESP8266 acts as a WiFi-enabled web server that allows users to interact with the microcontroller through a simple HTML page. Instead of hosting a full HTTP server on the MCU, the ESP8266 handles all web communication, serving pages over WiFi using the HTTP protocol. The ARM microcontroller sends webpage data and receives user requests through a UART serial connection (TX ↔︎ RX) at 125000 baud. When a browser connects to the ESP8266’s WiFi network (e.g., Lab6ESP_xx) and accesses http://192.168.4.1/, the ESP forwards the request to the MCU in the form /REQ:‘…’. The MCU responds by sending an HTML-formatted webpage, which the ESP then displays. This setup creates a compact IoT system where the MCU gathers and transmits data—such as temperature readings—to the ESP8266, which presents the information on a web interface accessible from any connected device. More information on this: Lab6 E-155 webpage] WEBSITE NAM: http://192.168.4.1/ledoff?"
-  },
-  {
-    "objectID": "Labs/Lab6/Lab6.html#result",
-    "href": "Labs/Lab6/Lab6.html#result",
-    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
-    "section": "Result",
-    "text": "Result\n\nSchematic\n\n\n\nFigure 1: Schematic of the physical circuit.\n\n\n\n\nSPI Trace\n\n\n\nFigure 2: SPI trace of communication between temperature sensor and MCU during a temperature read.\n\n\n\n\nHTML page\n\n\n\nFigure 3: HTML Page"
-  },
-  {
-    "objectID": "Labs/Lab6/Lab6.html#conclusion",
-    "href": "Labs/Lab6/Lab6.html#conclusion",
-    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
-    "section": "Conclusion",
-    "text": "Conclusion\nThe system successfully communicates with the SPI-based temperature sensor, configures its resolution, and retrieves temperature readings. Everything is displayed in a HTML page, were one can control an LED and the resolution of the temperature sensor reading. On the webpage, one can observe how the temperature increases if you place your finger on top to warm the sensor. I have been able to build a simple IoT device."
-  },
-  {
-    "objectID": "Labs/Lab6/Lab6.html#ai-sections",
-    "href": "Labs/Lab6/Lab6.html#ai-sections",
-    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
-    "section": "AI Sections",
-    "text": "AI Sections\nMy AI section can be found in the following link: AI SECTION"
-  },
-  {
-    "objectID": "Labs/Lab1/Lab1.html",
-    "href": "Labs/Lab1/Lab1.html",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
+    "objectID": "Overview.html",
+    "href": "Overview.html",
+    "title": "System Overview",
     "section": "",
-    "text": "In Lab 1, the overall goal was to ensure our E155 Development Boards were working correctly solder all components on the board and then programming the FPGA and MCU. Both boards (FPGA and MCU) were initially programmed with example code to ensure the software flow was working. Subsequently, our task was to implement a custom design to drive a 7-segment display and several LEDs, with inputs provided through DIP switches."
+    "text": "Each drumstick is designed as a fully independent embedded system, containing its own BNO085 sensor, Arduino Nano ESP32, FPGA, and STM32 microcontroller. This distributed architecture ensures that the left and right sticks remain electrically and logically isolated — improving robustness, reducing latency, and making the system scalable to additional sticks in the future.\nThe data pipeline in each stick relies on multiple communication protocols between its hardware components. The BNO085 sensor communicates with the Arduino Nano ESP32 using the I²C protocol, with the high-level SHTP protocol layered on top to enable structured transfer of fused motion data. Once the sensor data is received by the ESP32, it is forwarded to the FPGA over an SPI interface, where the FPGA operates as the SPI slave and the ESP32 serves as the SPI master. On the FPGA, the data is Package into a custom packet format and relayed to the MCU for trigger processing. From there, the FPGA sends the packaged data to the STM32 microcontroller through a second SPI link, again with the FPGA acting as the slave and the STM32 as the master. The microcontroller performs gesture recognition to detect drumming motions, and the resulting sound IDs (0–7) are output through a digital-to-analog converter (DAC) to drive a speaker that plays the correct drum sound."
   },
   {
-    "objectID": "Labs/Lab1/Lab1.html#introduction",
-    "href": "Labs/Lab1/Lab1.html#introduction",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
+    "objectID": "Overview.html#github-code",
+    "href": "Overview.html#github-code",
+    "title": "System Overview",
+    "section": "GITHUB CODE:",
+    "text": "GITHUB CODE:\nCOMPELTE!!!!!"
+  },
+  {
+    "objectID": "Overview.html#bill-of-materials",
+    "href": "Overview.html#bill-of-materials",
+    "title": "System Overview",
+    "section": "Bill of Materials",
+    "text": "Bill of Materials\nThe project was given a budget of $50, and the Bill of Materials below show how that budget was allocated.\n \nTable 2: Bill of Materials Breakdown\n\n\n\nMaterial / Part\nQuantity\nUnit Cost\nTotal Cost\n\n\n\n\nBNO055 IMU Sensors\n2\n$24.95\n$49.90\n\n\nSpeaker (8Ω, 4W)\n1\nStockroom\n$0.00\n\n\nDrum Switches\n2\nStockroom\n$0.00\n\n\nPotentiometer\n1\nStockroom\n$0.00\n\n\nSD Card\n1\nStockroom\n$0.00\n\n\nTotal\n\n\n$49.90\n\n\n\n\n\n\nFigure X: BNO85 information on the digikey website"
+  },
+  {
+    "objectID": "Results.html",
+    "href": "Results.html",
+    "title": "Results",
     "section": "",
-    "text": "In Lab 1, the overall goal was to ensure our E155 Development Boards were working correctly solder all components on the board and then programming the FPGA and MCU. Both boards (FPGA and MCU) were initially programmed with example code to ensure the software flow was working. Subsequently, our task was to implement a custom design to drive a 7-segment display and several LEDs, with inputs provided through DIP switches."
+    "text": "Below you can observe the final build and performance of our invisible drum set."
   },
   {
-    "objectID": "Labs/Lab1/Lab1.html#fpga-design",
-    "href": "Labs/Lab1/Lab1.html#fpga-design",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
-    "section": "FPGA Design",
-    "text": "FPGA Design\n\nSteps\nAs shown in the Specifications, 4 DIP switch controller has to be design to control 3 LEDs and a 7-segment display. Having the following inputs and outputs:\n\n\n\nOUTPUT\nINPUT\nOPERATION\n\n\n\n\nLED 0\nS[0:1]\nXOR\n\n\nLED 1\nS[2:3]\nAND\n\n\nLED 2\n48 MHz clock\n2.4 Hz blink\n\n\n7-Segment Display\nS[0:3]\nbinary decoder\n\n\n\n\n\nAproach\nI build my design using two SystemVerilog modules, one for the 7-segment display and the second one a top module that also included the led logic:\n\n\n\n\n\n\n\nSystemVerilog Module\nDescription\n\n\n\n\nlab1_mb\nTop FPGA specific module, includes clock module\n\n\nsevseg\n7-segment display combinational logic\n\n\n\nBellow is the design of the block diagram designed:\n\nThe FPGA-specific top module can be found here, and the 7-segment display module is here.\n\n\nTesting\nI ran into issues when running QuestaSim due to not being able to add the library iCE40 needed for the counter implementation we were using. I solved that by starting questa directly from Lattice Radiant, which did allow me to add the specific library.\nOnce I had Questa working, I created two testbenches to verify that my Verilog was working correctly for both modules. These testbenches load a series of testvectors that simulate all of the possible combinations of switches and checks that LEDs 0 and 1 along with the 7-segment display have the appropriate outputs.\nThe resulting waveforms can be found below:\n\n\n\nResulting waveform is pictured below for the top module that included both the LEDs and the 7-segment display\n\n\n\n\n\nResulting waveform is pictured below for the 7-segment display module\n\n\nWhen run, the testbenches finished with the following message, indicating a successful run.\n16 tests completed with 0 errors.\nAll testbenches and testvector files can be found here."
+    "objectID": "Results.html#videos",
+    "href": "Results.html#videos",
+    "title": "Results",
+    "section": "Videos",
+    "text": "Videos\nCOMPLETE THIS LATER!!!!"
   },
   {
-    "objectID": "Labs/Lab1/Lab1.html#hardware",
-    "href": "Labs/Lab1/Lab1.html#hardware",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
-    "section": "Hardware",
-    "text": "Hardware\n\nBoard Assembly\nIn lab1, I assembled a custom printed circuit board which hosts the MCU and FPGA boards. The board has several features that are convenient for developing embedded systems such as:\n\nPins which can be directly routed from the MCU to the FPGA via the board\nExtension headers for the mikroBUS and 6-pin PMOD standard\nUser configurable LEDs, pushbuttons, and slider switches.\nHeader to route pins via a ribbon cable to a separate breadboard adapter PCB which can be inserted into a solderless breadboard.\n\nAfter soldering all of the components to my board, I was having weird issues with the LEDS not turning on. After lots of troubleshooting, I eventually traced it down to a bad solder joint in the neighbouring resistors and after reflowing it the board was working correctly.\nThe assembled board can be seen here:"
+    "objectID": "Results.html#pictures",
+    "href": "Results.html#pictures",
+    "title": "Results",
+    "section": "Pictures",
+    "text": "Pictures\n\n\n\n\nPicture 1: User Testing of the Dual-Stick Invisible Drum Set Prototype\n\n\n\n \n\n\n\n\nPicture 2 Final Prototype Assembly with Integrated Speaker Output\n\n\n\n \n\n\n\n\nPicture 3: Complete dual-stick embedded prototype during testing\n\n\n\n \n\n\n\n\nPicture 4: Emmett playing the drums"
   },
   {
-    "objectID": "Labs/Lab1/Lab1.html#segment-display-circuit",
-    "href": "Labs/Lab1/Lab1.html#segment-display-circuit",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
-    "section": "7-Segment Display circuit",
-    "text": "7-Segment Display circuit\nThe 7-segment display is a common-anode type, meaning one pin is tied to 3.3 V while the remaining pins connect through current-limiting resistors to the FPGA’s I/O. Driving an I/O pin low turns on the corresponding LED segment.\n\nResistor Calculation\nTo determine the appropriate resistor value, I used the forward voltage and current ratings from the 7-segment display datasheet. In the datasheet, the voltage drop is typically 2.1 V, so with a 3.3 V supply voltage the resistor will have 1.2 V going through it. I wanted to keep the current within the labs constraints 5-20mA to ensure low power draw so the LEDs were bright enough to see. I choose a 150ohms resistor which ended up giving me a current of 8mA (within range).\nDatasheet: HDSP-511x\n\n\nCounter Frequency Value\nI used the starter code given on the website which had a clk that had a frequency of 2.4MHz and the opjective was to blink LED[2] at a frequency of 2.4Hz. To achieve that I divided the given frequency by the desired and then divided again by 2 since the clk has two edges. That resulted in 5M cycles every toggle.\n\n\n\nCorrect frequency output for led[2] = 2.4 Hz"
-  },
-  {
-    "objectID": "Labs/Lab1/Lab1.html#schematic",
-    "href": "Labs/Lab1/Lab1.html#schematic",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
-    "section": "Schematic",
-    "text": "Schematic\nThe circuit schematic consists of the FPGA, DIP switches, LEDs, and a 7-segment display."
-  },
-  {
-    "objectID": "Labs/Lab1/Lab1.html#results",
-    "href": "Labs/Lab1/Lab1.html#results",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
-    "section": "Results",
-    "text": "Results\nThe E155 development board is fully assembled and operational. The FPGA, programmed with synthesized Verilog, drives the LEDs and 7-segment display as specified, with functionality verified in both simulation and hardware testing. The 7-segment display presents all digits clearly with uniform brightness, and overall the design meets every requirement for the lab.\n\n\n\nUniform Brightness for the 7-segment Display"
-  },
-  {
-    "objectID": "Labs/Lab1/Lab1.html#ai-sections",
-    "href": "Labs/Lab1/Lab1.html#ai-sections",
-    "title": "Lab 1: FPGA and MCU Setup and Testing",
-    "section": "AI Sections",
-    "text": "AI Sections\nMy AI section can be found in the following link: AI SECTION"
-  },
-  {
-    "objectID": "Labs/Lab2/Lab2.html",
-    "href": "Labs/Lab2/Lab2.html",
-    "title": "Lab 2: Multiplexed 7-Segment Display",
+    "objectID": "bios.html",
+    "href": "bios.html",
+    "title": "Invisible Drum Set",
     "section": "",
-    "text": "In this lab, an FPGA design was created to read two 4-bit binary inputs from switch sets and display them on a 2-digit seven-segment display. The circuit also calculates the sum of the two numbers and outputs it in binary using five LEDs. To minimize hardware usage, time multiplexing is employed so that both digits can be shown with a single decoder module and shared output pins."
+    "text": "Harvey Mudd College student majoring in Engineering and Economics with hands-on experience in ML/AI product management at Apple and Ford Motor Company. Expertise in embedded systems, data science, and cross-functional product development.\n\n  LinkedIn    Github   Website \n\n \n\n\n\n\nHarvey Mudd College student majoring in Engineering with experience in electrical and computer engineering/digital design. Currently doing research as a Clay-Wolkin Fellow at Harvey Mudd’s VLSI lab developing a comprehensive open-source functional verification suite for RISC-V processors. Experience with SystemVerilog and RISC-V assembly.\n\n  LinkedIn    Github   Website"
   },
   {
-    "objectID": "Labs/Lab2/Lab2.html#introduction",
-    "href": "Labs/Lab2/Lab2.html#introduction",
-    "title": "Lab 2: Multiplexed 7-Segment Display",
+    "objectID": "bios.html#meet-the-team",
+    "href": "bios.html#meet-the-team",
+    "title": "Invisible Drum Set",
     "section": "",
-    "text": "In this lab, an FPGA design was created to read two 4-bit binary inputs from switch sets and display them on a 2-digit seven-segment display. The circuit also calculates the sum of the two numbers and outputs it in binary using five LEDs. To minimize hardware usage, time multiplexing is employed so that both digits can be shown with a single decoder module and shared output pins."
+    "text": "Harvey Mudd College student majoring in Engineering and Economics with hands-on experience in ML/AI product management at Apple and Ford Motor Company. Expertise in embedded systems, data science, and cross-functional product development.\n\n  LinkedIn    Github   Website \n\n \n\n\n\n\nHarvey Mudd College student majoring in Engineering with experience in electrical and computer engineering/digital design. Currently doing research as a Clay-Wolkin Fellow at Harvey Mudd’s VLSI lab developing a comprehensive open-source functional verification suite for RISC-V processors. Experience with SystemVerilog and RISC-V assembly.\n\n  LinkedIn    Github   Website"
   },
   {
-    "objectID": "Labs/Lab2/Lab2.html#design-and-testing-methodology",
-    "href": "Labs/Lab2/Lab2.html#design-and-testing-methodology",
-    "title": "Lab 2: Multiplexed 7-Segment Display",
-    "section": "Design and Testing Methodology",
-    "text": "Design and Testing Methodology\nFor this lab I build from lab 1. I already had my 7-segment display decoder and the counter, which I editted to run at a frequnecy of 60KHz (Bc it’s a frequency humans can’t detect, so you wouldn’t be able to perceive the shifting between the two displays). On top of that, I added an adder for the LEDs addition. I had my two DIP switches as inputs and used the counter producing that slower clock to alternate which set of switches is sent to the 7-segment decoder and ensures that the appropriate anode is activated."
-  },
-  {
-    "objectID": "Labs/Lab2/Lab2.html#technical-documentation",
-    "href": "Labs/Lab2/Lab2.html#technical-documentation",
-    "title": "Lab 2: Multiplexed 7-Segment Display",
-    "section": "Technical Documentation:",
-    "text": "Technical Documentation:\nMy code can be found here Github Source\n\nBlock Diagram\n\n\n\nFigure 1: Block Driagram Lab2\n\n\n\n\n\n\n\n\n\nSystemVerilog Module\nDescription\n\n\n\n\nlab2_mb.sv\nTop module with adder, counter, and input selection\n\n\nsevseg\n7-segment display decoder\n\n\n\n\n\nSchematic\n\n\n\nFigure 2: Schematic Lab2 - Layout of the design\n\n\n\nInternal 100 k pullup resistor for the DIP switches so they are not floating.\nThe PNP transistors datasheet specifies that we want a current of less than 1mA if the max Ic we can deliver to the 7-seg display is 20mA (Datasheet: (IC = 10 mAdc, IB = 1.0 mAdc). Also have a forward voltage from the PMP transistor of 0.6. This would give us a voltage drop of 2.6 and any resistor above 2.6kohms would satisfy our constraints. I chose 3kohms.\nThe LEDs in the 7-segment display have a voltage drop of 1.8 V (datasheet), and the PMP has a Vcesat of 0.25. Therefore, to satisfy the constraint of less than 8mA, our resistor value must be above 156.25ohms. I choose a current-limiting resistor of 200 ohms. Datasheet:\nThe output sum LEDs have a voltage drop of 2.35 V (datasheet), so 120 current-limiting resistors were selected in order to achieve a current below 8mA."
-  },
-  {
-    "objectID": "Labs/Lab2/Lab2.html#results-and-discussion",
-    "href": "Labs/Lab2/Lab2.html#results-and-discussion",
-    "title": "Lab 2: Multiplexed 7-Segment Display",
-    "section": "Results and Discussion",
-    "text": "Results and Discussion\n\nTestbench Simulation\n\n\n\nFigure 3: Screenshot of a QuestaSim simulation for lab2_mb.sv for sel=10\n\n\n\n\n\nFigure 4: Screenshot of a QuestaSim simulation for lab2_mb.sv for sel=01\n\n\nFigure 3 and 4 show the QuestaSim simulation validating my Sytem Verilog code.\n\n\n\nFigure 5: Screenshot of a QuestaSim simulation for selection switching\n\n\nFigure 5 shows the QuestaSim simulation validating how everytime clk_singal is shifting between the two display numbers."
-  },
-  {
-    "objectID": "Labs/Lab2/Lab2.html#conclusion",
-    "href": "Labs/Lab2/Lab2.html#conclusion",
-    "title": "Lab 2: Multiplexed 7-Segment Display",
-    "section": "Conclusion",
-    "text": "Conclusion\nThe design correctly displays two digits on the seven-segment display simultaneously using only one set of pins through time-multiplexing. The LEDs accurately represent the sum for all input values. When implemented on the FPGA, the circuit functions as expected and fulfills all intended objectives and specifications.\n\n\n\nFigure 6: Example of hardware implementation.\n\n\nAbove you can observe how the one switch is turned on to 1 and the other to 2 as can also be observed on the two display. The leds also add to light up the two right most leds, which would be the binary addition of the two segments (3)."
-  },
-  {
-    "objectID": "Labs/Lab2/Lab2.html#ai-sections",
-    "href": "Labs/Lab2/Lab2.html#ai-sections",
-    "title": "Lab 2: Multiplexed 7-Segment Display",
-    "section": "AI Sections",
-    "text": "AI Sections\nMy AI section can be found in the following link: AI SECTION"
-  },
-  {
-    "objectID": "Labs/Lab4/Lab4.html",
-    "href": "Labs/Lab4/Lab4.html",
-    "title": "Lab 4: Digital Audio",
+    "objectID": "Validation.html",
+    "href": "Validation.html",
+    "title": "Validation of System",
     "section": "",
-    "text": "In this lab, an ARM microcontroller (STMLK324KC microcontroller) was programmed to drive a speaker and play two different songs. The objective was to become familiar with the MCU’s memory-mapped I/O and timer peripherals. The implementation plays the given song, Für Elise, as well as an additional selection of my choice, which was the Minecraft song."
+    "text": "Before validating the SPI interface, the correct operation of the BNO085 sensor stream was confirmed using the Arduino Serial Monitor. As shown in Figure X, the Arduino receives fused motion data from SHTP Channel 2, including Euler angles and gyroscope measurements. The reported Status = 1 confirms valid quaternion and gyro results, while the dt field demonstrates a stable sampling interval. This establishes that the sensor is configured correctly prior to forwarding data over SPI.\n\n\n\nFigure 8: Arduino Serial Monitor of the Sensor Data\n\n\n \n\n\n\nTo verify correct data transfer between the Arduino ESP32 and the FPGA, the SPI bus was monitored using a logic analyzer. The captured waveform confirms that the expected byte sequence is transmitted from the Arduino to the FPGA when new motion data is available. In the SPI trace, the Chip Select (CS) line goes low to initiate communication, and the Serial Clock (SCLK) drives the shifting of bits on the MOSI line. The logic analyzer successfully decodes the transmitted bytes, showing the correct formatting of the motion-data packet. The packet begins with the synchronization header 0xAA, followed by three 16-bit signed values corresponding to the Euler angles (roll, pitch, yaw), encoded in MSB-first two’s-complement representation:\n\n\n\nFigure 9: Logic Analyzer with outputted SPI Protocol\n\n\n\nSensor Data Packet Byte Map\n\n\n\n\n\n\n\n\nParameter\nRaw Bytes (Hex, 2’s Complement)\nValue (Decimal)\nInterpretation\n\n\n\n\nHeader\nAA\n—\nPacket start marker\n\n\nRoll\n03 74\n884\n~88.4° (÷10)\n\n\nPitch\nFF 31\n–207\n~–20.7° (÷10)\n\n\nYaw\n1F 0D\n7949\n~794.9° (wrap correction later)\n\n\n\n \nThis successful logic-level validation demonstrates that:\n\nThe decoded values shown in the logic analyzer match the same roll, pitch, and yaw values printed in the Arduino serial monitor, confirming full consistency between software-level and wire-level communication.\nThe SPI protocol is functioning correctly.\nThe data formatting (header + signed angle values) matches the intended system design.\n\nThis result confirms that the Arduino-to-FPGA stage of the communication pipeline is reliable, and it establishes confidence in the real-time transmission path used in the complete system.\n \n\n\n\nTo verify correct data transfer between the FPGA and the mcu, the SPI bus was monitored using a test_bench and a logic analyzer. As we can observe in Figure X we added a test pattern in module spi_slave_mcu.sv and then we can observe how that same packet was transmitted correctly in the mcu segger debug terminal. This shows that the spi protocol works correctly.\n\n\n\nFigure 10: spi_slave_mcu test pattern\n\n\n\n\n\nFigure 11: Segger Debug Terminal outputting mcu receiving the correct test pattern\n\n\nAs shown in Figure X, the MCU successfully receives the formatted 16-byte packets transmitted through the FPGA. These packets originate from SHTP Channel 2, which is the dedicated fused-sensor data stream of the BNO085. The Arduino firmware parses the incoming SHTP frames and extracts only the motion-tracking payload, removing the original SHTP header before re-packaging the data for SPI transmission. Each packet begins with a synchronization header byte (0xAA), followed by fused orientation and inertial measurements encoded as signed 16-bit integers (MSB-first). A status/flags byte indicates data validity, and two trailing bytes are reserved for potential future use. This structure allows the MCU to efficiently decode motion data in real time while ensuring reliable packet boundary detection. Table X, explains in more detail each byte transferred.\n\n\n\nFigure 12: MCU Debug Terminal output displaying the 16-byte SPI packet received from the FPGA, including the 0xAA synchronization header and sensor data originating from SHTP Channel 2\n\n\n\nPacket Byte Definitions\n\n\n\n\n\n\nBytes\nInformation\n\n\n\n\n0\nHeader (0xAA)\n\n\n1-2\nRoll (int16_t, MSB first) - Euler angle scaled by 100\n\n\n3-4\nPitch (int16_t, MSB first) - Euler angle scaled by 100\n\n\n5-6\nYaw (int16_t, MSB first) - Euler angle scaled by 100\n\n\n7-8\nGyro X (int16_t, MSB first) - scaled by 2000\n\n\n9-10\nGyro Y (int16_t, MSB first) - scaled by 2000\n\n\n11-12\nGyro Z (int16_t, MSB first) - scaled by 2000\n\n\n13\nFlags (bit 0 = Euler valid, bit 1 = Gyro valid)\n\n\n14-15\nReserved (0x00)\n\n\n\n \nCustom 16-byte SPI packet structure used for transmitting fused orientation and inertial data from the Arduino through the FPGA to the MCU. The packet includes a 0xAA synchronization header followed by sensor measurements and status information extracted from SHTP Channel 2 reports.\n\n\n\nFigure 13: Logic Analyzer showcasing the SPI Protocol\n\n\n \n\n\n\nTo verify audio output capability and confirm correct DAC initialization, the MCU firmware begins by sequentially playing each stored drum sample at startup. As shown in Figure X, the debug log confirms successful SPI configuration, DAC activation, and playback of all seven drum sounds (Kick, Snare, Hi-Hat Closed, Hi-Hat Open, Crash, Ride, Tom High, Tom Low). This provides a functional baseline test proving that the audio subsystem is fully operational before real-time trigger detection begins.\n\n\n\nFigure 14: Initialization of all drum sounds outputted by the DAC"
   },
   {
-    "objectID": "Labs/Lab4/Lab4.html#introduction",
-    "href": "Labs/Lab4/Lab4.html#introduction",
-    "title": "Lab 4: Digital Audio",
+    "objectID": "Validation.html#working-protocols",
+    "href": "Validation.html#working-protocols",
+    "title": "Validation of System",
     "section": "",
-    "text": "In this lab, an ARM microcontroller (STMLK324KC microcontroller) was programmed to drive a speaker and play two different songs. The objective was to become familiar with the MCU’s memory-mapped I/O and timer peripherals. The implementation plays the given song, Für Elise, as well as an additional selection of my choice, which was the Minecraft song."
-  },
-  {
-    "objectID": "Labs/Lab4/Lab4.html#design-methodology",
-    "href": "Labs/Lab4/Lab4.html#design-methodology",
-    "title": "Lab 4: Digital Audio",
-    "section": "Design Methodology",
-    "text": "Design Methodology\nI based my implementation on several example libraries from the course, making a number of modifications specific to this lab. The GPIO and RCC libraries were used almost unchanged, but I built the timer and PWM libraries from scratch. To do so, I had to carefully read and understand both the datasheet and the reference manual. I configured two timers (TIM15 and TIM16): one in standard count-up mode and the other in PWM mode. The PWM timer was used to generate the desired output frequency, with the duty cycle fixed at 50% to avoid distorting the sound. Configuring both timers required careful selection of register values to ensure they could play the full range of frequencies and sustain them for the correct durations. The datasheet was essential, as it specified which bits in the RCC register enable the timers’ clocks. It also explained how to configure a timer for PWM mode and route its output to a GPIO pin connected to the speaker. From there, I could also use the counter setup to control delays and note durations."
-  },
-  {
-    "objectID": "Labs/Lab4/Lab4.html#technical-documentation",
-    "href": "Labs/Lab4/Lab4.html#technical-documentation",
-    "title": "Lab 4: Digital Audio",
-    "section": "Technical Documentation:",
-    "text": "Technical Documentation:\nThe source code for the project can be found in the associated GitHub repository.\n\nSchematic\n\n\n\nFigure 1: Schematic of the circuit design for lab4\n\n\nThe schematic above shows the circuit connected to our speaker. We used an LM386 low-voltage audio power amplifier to take the PWM signal from a GPIO pin on the MCU and drive the speaker to produce sound. The resistor and capacitor values were chosen based on the LM386 datasheet recommendations. Additionally, a potentiometer was included to adjust the speaker’s output volume."
-  },
-  {
-    "objectID": "Labs/Lab4/Lab4.html#timer-calculations",
-    "href": "Labs/Lab4/Lab4.html#timer-calculations",
-    "title": "Lab 4: Digital Audio",
-    "section": "Timer Calculations",
-    "text": "Timer Calculations\n\n\n\nFigure 2: Individual pitches are calculated to be accurate within 1% across the frequency range of 220-1000 Hz.\n\n\n\n\n\nFigure 3: calculations for min/max duration and min/max frequency supported"
-  },
-  {
-    "objectID": "Labs/Lab4/Lab4.html#results",
-    "href": "Labs/Lab4/Lab4.html#results",
-    "title": "Lab 4: Digital Audio",
-    "section": "Results",
-    "text": "Results\n\n\nYour browser does not support the video tag."
-  },
-  {
-    "objectID": "Labs/Lab4/Lab4.html#conclusion",
-    "href": "Labs/Lab4/Lab4.html#conclusion",
-    "title": "Lab 4: Digital Audio",
-    "section": "Conclusion",
-    "text": "Conclusion\nThe design successfully outputs two songs in sequence through a speaker, with a potentiometer providing volume control. All pitches and frequencies are generated accurately.\nConclusion\nThe overall design works as expected, and we are able to play Fur Elise and another song of our choice on the speakers, by using the MCU clock to generate a PWM frequency for the tone, as well as for a delay timer. In other words, our PLL clock goes to two timer busses to generate a PWM signal for our frequency and create a timer for our audio. Overall, I spent 20 hours on this lab."
-  },
-  {
-    "objectID": "Labs/Lab4/Lab4.html#ai-sections",
-    "href": "Labs/Lab4/Lab4.html#ai-sections",
-    "title": "Lab 4: Digital Audio",
-    "section": "AI Sections",
-    "text": "AI Sections\nMy AI section can be found in the following link: AI SECTION"
-  },
-  {
-    "objectID": "Labs.html",
-    "href": "Labs.html",
-    "title": "E155 Labs",
-    "section": "",
-    "text": "Lab Report 1"
-  },
-  {
-    "objectID": "Labs.html#lab-1-fpga-and-mcu-setup-and-testing",
-    "href": "Labs.html#lab-1-fpga-and-mcu-setup-and-testing",
-    "title": "E155 Labs",
-    "section": "",
-    "text": "Lab Report 1"
-  },
-  {
-    "objectID": "Labs.html#lab-2-multiplexed-7-segment-display",
-    "href": "Labs.html#lab-2-multiplexed-7-segment-display",
-    "title": "E155 Labs",
-    "section": "Lab 2: Multiplexed 7-Segment Display",
-    "text": "Lab 2: Multiplexed 7-Segment Display\nLab Report 2"
-  },
-  {
-    "objectID": "Labs.html#lab-3-keypad-scanner",
-    "href": "Labs.html#lab-3-keypad-scanner",
-    "title": "E155 Labs",
-    "section": "Lab 3: Keypad Scanner",
-    "text": "Lab 3: Keypad Scanner\nLab Report 3"
-  },
-  {
-    "objectID": "Labs.html#lab-4-digital-audio",
-    "href": "Labs.html#lab-4-digital-audio",
-    "title": "E155 Labs",
-    "section": "Lab 4: Digital Audio",
-    "text": "Lab 4: Digital Audio\nLab Report 4"
-  },
-  {
-    "objectID": "Labs.html#lab-5-interrupts",
-    "href": "Labs.html#lab-5-interrupts",
-    "title": "E155 Labs",
-    "section": "Lab 5: Interrupts",
-    "text": "Lab 5: Interrupts\nLab Report 5"
-  },
-  {
-    "objectID": "Labs.html#lab-6-the-internet-of-things-and-serial-peripheral-interface",
-    "href": "Labs.html#lab-6-the-internet-of-things-and-serial-peripheral-interface",
-    "title": "E155 Labs",
-    "section": "Lab 6: The Internet of Things and Serial Peripheral Interface",
-    "text": "Lab 6: The Internet of Things and Serial Peripheral Interface\nLab Report 6"
-  },
-  {
-    "objectID": "Labs.html#lab-7-the-advanced-encryption-standard",
-    "href": "Labs.html#lab-7-the-advanced-encryption-standard",
-    "title": "E155 Labs",
-    "section": "Lab 7: The Advanced Encryption Standard",
-    "text": "Lab 7: The Advanced Encryption Standard\nLab Report 7"
-  },
-  {
-    "objectID": "Resources.html",
-    "href": "Resources.html",
-    "title": "E155 Resources",
-    "section": "",
-    "text": "Link to the Course Website: Course Website"
+    "text": "Before validating the SPI interface, the correct operation of the BNO085 sensor stream was confirmed using the Arduino Serial Monitor. As shown in Figure X, the Arduino receives fused motion data from SHTP Channel 2, including Euler angles and gyroscope measurements. The reported Status = 1 confirms valid quaternion and gyro results, while the dt field demonstrates a stable sampling interval. This establishes that the sensor is configured correctly prior to forwarding data over SPI.\n\n\n\nFigure 8: Arduino Serial Monitor of the Sensor Data\n\n\n \n\n\n\nTo verify correct data transfer between the Arduino ESP32 and the FPGA, the SPI bus was monitored using a logic analyzer. The captured waveform confirms that the expected byte sequence is transmitted from the Arduino to the FPGA when new motion data is available. In the SPI trace, the Chip Select (CS) line goes low to initiate communication, and the Serial Clock (SCLK) drives the shifting of bits on the MOSI line. The logic analyzer successfully decodes the transmitted bytes, showing the correct formatting of the motion-data packet. The packet begins with the synchronization header 0xAA, followed by three 16-bit signed values corresponding to the Euler angles (roll, pitch, yaw), encoded in MSB-first two’s-complement representation:\n\n\n\nFigure 9: Logic Analyzer with outputted SPI Protocol\n\n\n\nSensor Data Packet Byte Map\n\n\n\n\n\n\n\n\nParameter\nRaw Bytes (Hex, 2’s Complement)\nValue (Decimal)\nInterpretation\n\n\n\n\nHeader\nAA\n—\nPacket start marker\n\n\nRoll\n03 74\n884\n~88.4° (÷10)\n\n\nPitch\nFF 31\n–207\n~–20.7° (÷10)\n\n\nYaw\n1F 0D\n7949\n~794.9° (wrap correction later)\n\n\n\n \nThis successful logic-level validation demonstrates that:\n\nThe decoded values shown in the logic analyzer match the same roll, pitch, and yaw values printed in the Arduino serial monitor, confirming full consistency between software-level and wire-level communication.\nThe SPI protocol is functioning correctly.\nThe data formatting (header + signed angle values) matches the intended system design.\n\nThis result confirms that the Arduino-to-FPGA stage of the communication pipeline is reliable, and it establishes confidence in the real-time transmission path used in the complete system.\n \n\n\n\nTo verify correct data transfer between the FPGA and the mcu, the SPI bus was monitored using a test_bench and a logic analyzer. As we can observe in Figure X we added a test pattern in module spi_slave_mcu.sv and then we can observe how that same packet was transmitted correctly in the mcu segger debug terminal. This shows that the spi protocol works correctly.\n\n\n\nFigure 10: spi_slave_mcu test pattern\n\n\n\n\n\nFigure 11: Segger Debug Terminal outputting mcu receiving the correct test pattern\n\n\nAs shown in Figure X, the MCU successfully receives the formatted 16-byte packets transmitted through the FPGA. These packets originate from SHTP Channel 2, which is the dedicated fused-sensor data stream of the BNO085. The Arduino firmware parses the incoming SHTP frames and extracts only the motion-tracking payload, removing the original SHTP header before re-packaging the data for SPI transmission. Each packet begins with a synchronization header byte (0xAA), followed by fused orientation and inertial measurements encoded as signed 16-bit integers (MSB-first). A status/flags byte indicates data validity, and two trailing bytes are reserved for potential future use. This structure allows the MCU to efficiently decode motion data in real time while ensuring reliable packet boundary detection. Table X, explains in more detail each byte transferred.\n\n\n\nFigure 12: MCU Debug Terminal output displaying the 16-byte SPI packet received from the FPGA, including the 0xAA synchronization header and sensor data originating from SHTP Channel 2\n\n\n\nPacket Byte Definitions\n\n\n\n\n\n\nBytes\nInformation\n\n\n\n\n0\nHeader (0xAA)\n\n\n1-2\nRoll (int16_t, MSB first) - Euler angle scaled by 100\n\n\n3-4\nPitch (int16_t, MSB first) - Euler angle scaled by 100\n\n\n5-6\nYaw (int16_t, MSB first) - Euler angle scaled by 100\n\n\n7-8\nGyro X (int16_t, MSB first) - scaled by 2000\n\n\n9-10\nGyro Y (int16_t, MSB first) - scaled by 2000\n\n\n11-12\nGyro Z (int16_t, MSB first) - scaled by 2000\n\n\n13\nFlags (bit 0 = Euler valid, bit 1 = Gyro valid)\n\n\n14-15\nReserved (0x00)\n\n\n\n \nCustom 16-byte SPI packet structure used for transmitting fused orientation and inertial data from the Arduino through the FPGA to the MCU. The packet includes a 0xAA synchronization header followed by sensor measurements and status information extracted from SHTP Channel 2 reports.\n\n\n\nFigure 13: Logic Analyzer showcasing the SPI Protocol\n\n\n \n\n\n\nTo verify audio output capability and confirm correct DAC initialization, the MCU firmware begins by sequentially playing each stored drum sample at startup. As shown in Figure X, the debug log confirms successful SPI configuration, DAC activation, and playback of all seven drum sounds (Kick, Snare, Hi-Hat Closed, Hi-Hat Open, Crash, Ride, Tom High, Tom Low). This provides a functional baseline test proving that the audio subsystem is fully operational before real-time trigger detection begins.\n\n\n\nFigure 14: Initialization of all drum sounds outputted by the DAC"
   }
 ]

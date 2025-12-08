@@ -1,8 +1,38 @@
 [
   {
-    "listing": "/blog.html",
-    "items": [
-      "/posts/first-post.html"
-    ]
+    "listing": "/Mcudesign.html",
+    "items": []
+  },
+  {
+    "listing": "/More.html",
+    "items": []
+  },
+  {
+    "listing": "/index.html",
+    "items": []
+  },
+  {
+    "listing": "/FPGA.html",
+    "items": []
+  },
+  {
+    "listing": "/NewHardware.html",
+    "items": []
+  },
+  {
+    "listing": "/AppendixA.html",
+    "items": []
+  },
+  {
+    "listing": "/Overview.html",
+    "items": []
+  },
+  {
+    "listing": "/Results.html",
+    "items": []
+  },
+  {
+    "listing": "/Validation.html",
+    "items": []
   }
 ]
