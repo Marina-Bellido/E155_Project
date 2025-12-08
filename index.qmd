@@ -1,17 +1,26 @@
 ---
-title: "E155 Portfolio"
-image: images/headshot.png
-about: 
-    template: jolla
-    links: 
-        - icon: linkedin
-          text: LinkedIn
-          href: https://www.linkedin.com/in/marina-bellido-hmc/
-        - icon: github
-          text: Github
-          href: https://github.com/Marina-Bellido?tab=repositories
+title: "E155 Final Project - Invisible Drum Set"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
 ---
 
-I am a senior engineering major at Harvey Mudd College interested in electrical and computer engineering/digital design. I'm currently doing research as a Clay-Wolkin Fellow at Harvey Mudd's VLSI lab developing a comprehensive open-source functional verification suite for RISC-V processors. I have experience with SystemVerilog and RISC-V assembly and would love to continue to grow my computer engineering skills. I'm always excited to learn new things and would be happy to connect with you!
 
-[](images/headshot.png)
+:::{.text-center}
+![Project creators, Emmett and Marina, posing with drumsticks. Learn more about the team members [here](bios.qmd)](images/team.png){width=65% .center}
+:::
+
+
+
+
+
+## Abstract
+This project aims to adapt the existing Invisible Drum Set—originally implemented with an Arduino Nano and BNO055 IMU sensor—onto the E155 hardware platform, consisting of an STM32 MCU and UPduino FPGA. It will enable playing virtual drums through air gestures detected by the IMU, with real-time audio synthesis and low latency. 
+
+
+
+<div style="display:flex; justify-content:center; gap:20px;">
+  <img src="images/drumer.png" style="width:40%; border-radius:6px;">
+  <img src="images/finalbox.png" style="width:55%; border-radius:6px;">
+</div>

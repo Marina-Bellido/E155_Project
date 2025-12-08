@@ -2,17 +2,31 @@ project:
   type: website
 
 website:
-  title: "E155 Portfolio"
+  title: "Invisible Drum Set"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - href: Labs.qmd
-        text: Labs
-      - href: Resources.qmd
-        text: Resources
-      - href: blog.qmd
-        text: Blogs
+      - href: bios.qmd
+        text: Meet The Team
+      - href: Overview.qmd
+        text: System Overview
+      - href: FPGA.qmd
+        text: FPGA Design
+      - href: Mcudesign.qmd
+        text: MCU Design
+      - href: NewHardware.qmd
+        text: New Hardware
+      - href: Results.qmd
+        text: Results
+      - href: Validation.qmd
+        text: Validation
+      - href: More.qmd
+        text: More
+      - href: AppendixA.qmd
+        text: Appendix A
+      
+
 
 
 format:

@@ -1,0 +1,40 @@
+---
+title: "Results"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+---
+
+Below you can observe the final build and performance of our invisible drum set. 
+
+## Videos
+
+COMPLETE THIS LATER!!!!
+
+## Pictures
+
+:::{.text-center}
+![Picture 1: User Testing of the Dual-Stick Invisible Drum Set Prototype](images/results/leilanidrum.png){width=80% .center}
+:::
+
+
+&nbsp;
+
+:::{.text-center}
+![Picture 2 Final Prototype Assembly with Integrated Speaker Output](images/finalbox.png){width=80% .center}
+:::
+
+
+&nbsp;
+
+:::{.text-center}
+![Picture 3: Complete dual-stick embedded prototype during testing](images/dualsystem.png){width=80% .center}
+:::
+
+
+&nbsp;
+
+:::{.text-center}
+![Picture 4: Emmett playing the drums](images/drumer.png){width=80% .center}
+:::

@@ -1,0 +1,61 @@
+---
+title: "More"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+---
+
+
+## Acknowledgements
+
+This project would not have been successful without the tireless efforts of the following individuals:
+
+**Prof. Spencer** - Thank you for your guidance, encouragement, and expertise throughout the semester. Your support helped shape both the success of this project and our growth as engineers.
+
+**Xavier Walter** — Thank you for your mentorship and willingness to help us through every challenge. Your technical insights, debugging support, and design advice were essential to our progress.
+
+
+&nbsp;
+
+## References: 
+
+
+
+
+
+
+#### HMC E-155 Website:
+[HMC E155 Project Website](https://hmc-e155.github.io/project/)
+
+[Lab7](https://github.com/HMC-E155/hmc-e155/blob/main/lab/lab07/lab07_mcu/lib/STM32L432KC_SPI.c)
+
+#### Arduino:
+[Arduino ESP32 Spec](https://docs.arduino.cc/tutorials/nano-esp32/cheat-sheet/#spi)
+
+[Adafruit](https://cdn-shop.adafruit.com/datasheets/BST_BNO055_DS000_12.pdf)
+
+
+#### BNO085 IMU Sensor:  
+[BNO08x Datasheet](https://docs.sparkfun.com/SparkFun_VR_IMU_Breakout_BNO086_QWIIC/assets/component_documentation/BNO080_085-Datasheet_v1.16.pdf)
+
+[BNO085 Sensor](https://www.adafruit.com/product/4754?gad_source=1&gad_campaignid=21079267614&gbraid=0AAAAADx9JvRgjNv8OxXekStexoGHD-hAp&gclid=CjwKCAiA3L_JBhAlEiwAlcWO5zsfMBGmL1NQxmRM3MnquMxWj3EDluoRM6g8wLuRyYmyKyP7IbEiNxoCwZQQAvD_BwE)
+
+
+#### MCU STM32L432KC:
+[STM32L432KC Reference Manual](https://hmc-e155.github.io/assets/doc/rm0394-stm32l41xxx42xxx43xxx44xxx45xxx46xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf) 
+
+[STM32L432KC Datasheet](https://hmc-e155.github.io/assets/doc/ds11451-stm32l432kc.pdf)
+
+[iCE40UP5K Datasheet](https://hmc-e155.github.io/assets/doc/FPGA-DS-02008-2-0-iCE40-UltraPlus-Family-Data-Sheet.pdf)
+
+
+#### Invisible Drum Set:
+
+[Aerodrums](https://aerodrums.com)
+
+[Hyperdrum](https://theodots.com)
+
+[PocketDrum 2 Max](https://www.aeroband.net/products/pocketdrum2-plus)
+
+[HafthorArni](https://github.com/HafthorArni/Invisible-Drum-Set)
