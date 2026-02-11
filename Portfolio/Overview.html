@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>MCU Design – Invisible Drum Set</title>
+<title>overview – Invisible Drum Set</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +23,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,67 +67,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: [{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: [],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -139,7 +79,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Invisible Drum Set</span>
     </a>
   </div>
@@ -150,48 +90,48 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./bios.html"> 
+    <a class="nav-link" href="../bios.html"> 
 <span class="menu-text">Meet The Team</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Overview.html"> 
+    <a class="nav-link" href="../Overview.html"> 
 <span class="menu-text">System Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Results.html"> 
+    <a class="nav-link" href="../Results.html"> 
 <span class="menu-text">Results</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./FPGA.html"> 
+    <a class="nav-link" href="../FPGA.html"> 
 <span class="menu-text">FPGA Design</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./Mcudesign.html" aria-current="page"> 
+    <a class="nav-link" href="../Mcudesign.html"> 
 <span class="menu-text">MCU Design</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./NewHardware.html"> 
+    <a class="nav-link" href="../NewHardware.html"> 
 <span class="menu-text">New Hardware</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Validation.html"> 
+    <a class="nav-link" href="../Validation.html"> 
 <span class="menu-text">Validation</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./More.html"> 
+    <a class="nav-link" href="../More.html"> 
 <span class="menu-text">More</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./AppendixA.html"> 
+    <a class="nav-link" href="../AppendixA.html"> 
 <span class="menu-text">Appendix A</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="https://Marina-Bellido.github.io/E155-Portfolio/"> 
-<span class="menu-text"><strong>Back to E155 Portfolio</strong></span></a>
+<span class="menu-text"><strong>Portfolio</strong></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -204,296 +144,19 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#mcu-runtime-flow" id="toc-mcu-runtime-flow" class="nav-link active" data-scroll-target="#mcu-runtime-flow">MCU Runtime Flow</a>
-  <ul class="collapse">
-  <li><a href="#main-application-files" id="toc-main-application-files" class="nav-link" data-scroll-target="#main-application-files">Main Application Files</a></li>
-  <li><a href="#detection-logic" id="toc-detection-logic" class="nav-link" data-scroll-target="#detection-logic">Detection Logic</a></li>
-  <li><a href="#sensor-processing" id="toc-sensor-processing" class="nav-link" data-scroll-target="#sensor-processing">Sensor Processing</a></li>
-  <li><a href="#audio-playback" id="toc-audio-playback" class="nav-link" data-scroll-target="#audio-playback">Audio Playback</a></li>
-  <li><a href="#hardware-abstraction-layer-stm32l432kc" id="toc-hardware-abstraction-layer-stm32l432kc" class="nav-link" data-scroll-target="#hardware-abstraction-layer-stm32l432kc">Hardware Abstraction Layer (STM32L432KC)</a></li>
-  <li><a href="#debug-utilities" id="toc-debug-utilities" class="nav-link" data-scroll-target="#debug-utilities">Debug &amp; Utilities</a></li>
-  </ul></li>
-  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">MCU Design</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>Decodes the packaged data packets from the FPGA, identifies drum triggers based on gesture patterns, and outputs audio samples through the DAC to drive the speaker. This transition to using Arduino for sensor data acquisition and FPGA for data packaging provided the reliability and consistency needed for real-time operation, while maintaining the FPGA’s role in efficient data processing and the MCU’s role in audio playback.</p>
-<section id="mcu-runtime-flow" class="level2">
-<h2 class="anchored" data-anchor-id="mcu-runtime-flow">MCU Runtime Flow</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/mcupics/flowchart.png" class="img-fluid figure-img"></p>
-<figcaption>Figure 4: MCU main control loop flowchart for dual-hand invisible drum system</figcaption>
-</figure>
-</div>
-<p>&nbsp;</p>
-<section id="main-application-files" class="level3">
-<h3 class="anchored" data-anchor-id="main-application-files">Main Application Files</h3>
-<p>This section contains the entry points for the system and the logic for the main control loops.</p>
-<ul>
-<li>main.c: Main entry point for dual-hand drum trigger system. Initializes hardware (DAC, SPI, buttons), reads sensor data from SPI, processes both sensors, and plays drum sounds when triggers detected.</li>
-<li>main_left.c: Single-hand version processing only left hand sensor. Uses left-hand-only detection logic for simplified testing.</li>
-<li>main_right.c: Single-hand version processing only right hand sensor. Uses right-hand-only detection logic for simplified testing.</li>
-</ul>
-</section>
-<section id="detection-logic" class="level3">
-<h3 class="anchored" data-anchor-id="detection-logic">Detection Logic</h3>
-<p>Files responsible for interpreting sensor data against the drum zone map.</p>
-<ul>
-<li>drum_detector.c Core drum trigger detection using yaw zones, pitch thresholds, and gyroscope readings. Checks both sensors against predefined zones and returns drum codes (0x00-0x07) when strike conditions met.</li>
-</ul>
-<p>The following logic pertantes to each left and right hand sensor:</p>
-<table class="caption-top table">
-<caption>Drum Trigger Mapping Logic Based on Orientation and Motion</caption>
-<colgroup>
-<col style="width: 5%">
-<col style="width: 10%">
-<col style="width: 7%">
-<col style="width: 16%">
-<col style="width: 35%">
-<col style="width: 12%">
-<col style="width: 12%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Code</th>
-<th style="text-align: center;">Instrument</th>
-<th style="text-align: center;">Hand</th>
-<th style="text-align: left;">Yaw Range (°)</th>
-<th style="text-align: left;">Pitch / Condition</th>
-<th style="text-align: center;">Gyro Y</th>
-<th style="text-align: center;">Gyro Z</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">0x00</td>
-<td style="text-align: center;">SNARE</td>
-<td style="text-align: center;">Right</td>
-<td style="text-align: left;">20° – 120°</td>
-<td style="text-align: left;">Any</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x00</td>
-<td style="text-align: center;">SNARE</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">350° – 100°</td>
-<td style="text-align: left;">≤ 30° OR Gyro Z ≤ -2000</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0x01</td>
-<td style="text-align: center;">HIHAT</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">350° – 100°</td>
-<td style="text-align: left;">&gt; 30°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">&gt; -2000</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x02</td>
-<td style="text-align: center;">KICK</td>
-<td style="text-align: center;">Button</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: center;">N/A</td>
-<td style="text-align: center;">N/A</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0x03</td>
-<td style="text-align: center;">HIGH_TOM</td>
-<td style="text-align: center;">Right</td>
-<td style="text-align: left;">340° – 20°</td>
-<td style="text-align: left;">≤ 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x03</td>
-<td style="text-align: center;">HIGH_TOM</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">325° – 350°</td>
-<td style="text-align: left;">≤ 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0x04</td>
-<td style="text-align: center;">MID_TOM</td>
-<td style="text-align: center;">Right</td>
-<td style="text-align: left;">305° – 340°</td>
-<td style="text-align: left;">≤ 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x04</td>
-<td style="text-align: center;">MID_TOM</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">300° – 325°</td>
-<td style="text-align: left;">≤ 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0x05</td>
-<td style="text-align: center;">CRASH</td>
-<td style="text-align: center;">Right</td>
-<td style="text-align: left;">340° – 20°</td>
-<td style="text-align: left;">&gt; 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x05</td>
-<td style="text-align: center;">CRASH</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">325° – 350°</td>
-<td style="text-align: left;">&gt; 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0x06</td>
-<td style="text-align: center;">RIDE</td>
-<td style="text-align: center;">Right</td>
-<td style="text-align: left;">305° – 340°</td>
-<td style="text-align: left;">&gt; 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x06</td>
-<td style="text-align: center;">RIDE</td>
-<td style="text-align: center;">Right</td>
-<td style="text-align: left;">200° – 305°</td>
-<td style="text-align: left;">&gt; 30°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0x06</td>
-<td style="text-align: center;">RIDE</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">300° – 325°</td>
-<td style="text-align: left;">&gt; 50°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x06</td>
-<td style="text-align: center;">RIDE</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">200° – 300°</td>
-<td style="text-align: left;">&gt; 30°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0x07</td>
-<td style="text-align: center;">FLOOR_TOM</td>
-<td style="text-align: center;">Right</td>
-<td style="text-align: left;">200° – 305°</td>
-<td style="text-align: left;">≤ 30°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0x07</td>
-<td style="text-align: center;">FLOOR_TOM</td>
-<td style="text-align: center;">Left</td>
-<td style="text-align: left;">200° – 300°</td>
-<td style="text-align: left;">≤ 30°</td>
-<td style="text-align: center;">&lt; -2500</td>
-<td style="text-align: center;">Any</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/mcupics/drumset.png" class="img-fluid figure-img"></p>
-<figcaption>Figure 5: Drumset</figcaption>
-</figure>
-</div>
-</section>
-<section id="sensor-processing" class="level3">
-<h3 class="anchored" data-anchor-id="sensor-processing">Sensor Processing</h3>
-<ul>
-<li>bno085_decoder.c: Converts BNO085 quaternion data (Q14 format) to Euler angles (roll, pitch, yaw). Normalizes yaw to 0-360° range for zone checking.</li>
-</ul>
-</section>
-<section id="audio-playback" class="level3">
-<h3 class="anchored" data-anchor-id="audio-playback">Audio Playback</h3>
-<ul>
-<li>audio_player.c: Maps drum codes to WAV sample arrays and plays sounds via DAC. Prevents overlapping playback using is_playing flag.</li>
-</ul>
-</section>
-<section id="hardware-abstraction-layer-stm32l432kc" class="level3">
-<h3 class="anchored" data-anchor-id="hardware-abstraction-layer-stm32l432kc">Hardware Abstraction Layer (STM32L432KC)</h3>
-<p>Low-level drivers for peripheral configuration and control.</p>
-<ul>
-<li>STM32L432KC_DAC.c: Configures DAC peripheral for audio output on PA4. Implements WAV playback using timer interrupts at specified sample rates.</li>
-<li>STM32L432KC_SPI.c: SPI slave mode communication to receive 16-byte sensor data packets from Arduino/ESP32 master. Parses quaternion and gyroscope data.</li>
-<li>STM32L432KC_USART.c: USART configuration for debug serial communication. Provides low-level byte/string transmission functions.</li>
-<li>STM32L432KC_GPIO.c: GPIO pin configuration and control. Implements pinMode(), digitalRead(), digitalWrite() for buttons and SPI pins.</li>
-<li>STM32L432KC_RCC.c: Clock configuration setting system clock to 80MHz. Enables peripheral clocks for GPIO, SPI, USART, DAC, and timers.</li>
-<li>STM32L432KC_FLASH.c: Flash memory configuration for 80MHz operation. Sets wait states and enables prefetch buffer.</li>
-<li>STM32L432KC_TIMER.c: Timer functions for delays. Implements ms_delay() for button debouncing and audio timing.</li>
-</ul>
-</section>
-<section id="debug-utilities" class="level3">
-<h3 class="anchored" data-anchor-id="debug-utilities">Debug &amp; Utilities</h3>
-<ul>
-<li>debug_print.c Debug logging using USART with printf-style formatting. Used for debugging sensor data and system state.</li>
-<li>wav_arrays/ Directory with WAV samples converted to C arrays. Contains all 8 drum samples as 16-bit PCM data.</li>
-</ul>
-</section>
-</section>
-<section id="technical-documentation" class="level2">
-<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
-<p>All code for MCU can be found on this <a href="https://github.com/Marina-Bellido/Invisible-Drumset-Embedded-System-E155/tree/main/mcu">GitHub repository.</a></p>
 
 
 
-</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -566,7 +229,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/Marina-Bellido\.github\.io\/E155_Project\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

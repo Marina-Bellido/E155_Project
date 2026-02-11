@@ -42,18 +42,11 @@
     "text": "References:\n\nHMC E-155 Website:\nHMC E155 Project Website\nLab7\n\n\nArduino:\nArduino ESP32 Spec\nAdafruit\n\n\nBNO085 IMU Sensor:\nBNO08x Datasheet\nBNO085 Sensor\n\n\nMCU STM32L432KC:\nSTM32L432KC Reference Manual\nSTM32L432KC Datasheet\niCE40UP5K Datasheet\n\n\nInvisible Drum Sets:\nAerodrums\nHyperdrum\nPocketDrum 2 Max\nHafthorArni"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "E155 Final Project - Invisible Drum Set",
-    "section": "",
-    "text": "“You guys made a kick*ss drumset.” — Prof. Matthew Spencer"
-  },
-  {
     "objectID": "index.html#abstract",
     "href": "index.html#abstract",
     "title": "E155 Final Project - Invisible Drum Set",
     "section": "Abstract",
-    "text": "Abstract\nThis project aims to adapt the existing Invisible Drum Set—originally implemented with an Arduino Nano and BNO055 IMU sensor—onto the E155 hardware platform, consisting of an STM32 MCU and UPduino FPGA. It will enable playing virtual drums through air gestures detected by the IMU, with real-time audio synthesis and low latency."
+    "text": "Abstract\nThis project aims to adapt the existing Invisible Drum Set—originally implemented with an Arduino Nano and BNO055 IMU sensor—onto the E155 hardware platform, consisting of an STM32 MCU and UPduino FPGA. It will enable playing virtual drums through air gestures detected by the IMU, with real-time audio synthesis and low latency.\n\n Results and Videos \n GithubRepo"
   },
   {
     "objectID": "FPGA.html",
